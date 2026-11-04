@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mail to Reminder</title>
+<script src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
+<style>
+  :root {
+    --bg: #ffffff; --fg: #1f1f1f; --muted: #616161; --line: #e0e0e0;
+    --accent: #e8771f; --accent-fg: #ffffff; --ok: #107c10;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1f1f1f; --fg: #f0f0f0; --muted: #a8a8a8; --line: #3a3a3a;
+      --accent: #f28c28; --accent-fg: #1a1a1a; --ok: #6ccb5f;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 16px; background: var(--bg); color: var(--fg);
+    font: 14px/1.45 -apple-system, "Segoe UI", system-ui, sans-serif;
+  }
+  .preview {
+    padding: 12px; border: 1px solid var(--line); border-radius: 6px;
+    word-break: break-word; margin-bottom: 14px;
+  }
+  .subject { font-weight: 600; margin-bottom: 4px; }
+  .meta { color: var(--muted); font-size: 13px; }
+  a.primary, button {
+    display: block; width: 100%; padding: 10px; border-radius: 6px;
+    font: inherit; font-weight: 600; text-align: center; text-decoration: none;
+    cursor: pointer;
+  }
+  a.primary { background: var(--accent); color: var(--accent-fg); border: 0; margin-bottom: 8px; }
+  button { background: transparent; color: var(--fg); border: 1px solid var(--line); }
+  a.primary:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .status { min-height: 20px; margin-top: 10px; font-size: 13px; color: var(--ok); }
+  .error { color: #c50f1f; }
+</style>
+</head>
+<body>
+  <div class="preview">
+    <div class="subject" id="subject">Loading…</div>
+    <div class="meta" id="meta"></div>
+  </div>
+  <a class="primary" id="create" href="#">Create reminder</a>
+  <button id="copy" type="button">Copy text</button>
+  <div class="status" id="status" role="status"></div>
+
+<script>
+  // Must match the name of your Shortcut exactly
+  const SHORTCUT_NAME = "Mail Reminder";
+
+  const pad = n => String(n).padStart(2, "0");
+  let reminderText = "";
+
+  Office.onReady(() => {
+    try {
+      const item = Office.context.mailbox.item;
+      const subject = item.subject || "(no subject)";
+      const who = item.from || item.sender || {};
+      const sender = who.displayName || who.emailAddress || "Unknown sender";
+      const d = new Date(item.dateTimeCreated); // received time, in your local time zone
+      const dateStr = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+
+      reminderText = `Mail: ${subject} | ${sender} | ${dateStr}`;
+
+      document.getElementById("subject").textContent = subject;
+      document.getElementById("meta").textContent = `${sender}, ${dateStr}`;
+      document.getElementById("create").href =
+        "shortcuts://run-shortcut?name=" + encodeURIComponent(SHORTCUT_NAME) +
+        "&input=text&text=" + encodeURIComponent(reminderText);
+    } catch (e) {
+      showStatus("Couldn't read this email: " + e.message, true);
+    }
+  });
+
+  document.getElementById("create").addEventListener("click", () => {
+    showStatus("Sent to Shortcuts.");
+  });
+
+  document.getElementById("copy").addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(reminderText);
+    } catch {
+      const t = document.createElement("textarea");
+      t.value = reminderText; document.body.appendChild(t);
+      t.select(); document.execCommand("copy"); t.remove();
+    }
+    showStatus("Copied. Run the Shortcut to create the reminder.");
+  });
+
+  function showStatus(msg, isError) {
+    const s = document.getElementById("status");
+    s.textContent = msg;
+    s.classList.toggle("error", !!isError);
+  }
+</script>
+</body>
+</html>
