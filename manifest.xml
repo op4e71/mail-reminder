@@ -11,9 +11,9 @@
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="Mail to Reminder"/>
   <Description DefaultValue="Sends the subject, sender and date of the open email to Apple Reminders."/>
-  <IconUrl DefaultValue="https://YOURNAME.github.io/mail-reminder/icon-64.png"/>
-  <HighResolutionIconUrl DefaultValue="https://YOURNAME.github.io/mail-reminder/icon-128.png"/>
-  <SupportUrl DefaultValue="https://YOURNAME.github.io/mail-reminder/"/>
+  <IconUrl DefaultValue="https://op4e71.github.io/mail-reminder/icon-64.png"/>
+  <HighResolutionIconUrl DefaultValue="https://op4e71.github.io/mail-reminder/icon-128.png"/>
+  <SupportUrl DefaultValue="https://op4e71.github.io/mail-reminder/"/>
   <Hosts>
     <Host Name="Mailbox"/>
   </Hosts>
@@ -25,7 +25,7 @@
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
-        <SourceLocation DefaultValue="https://YOURNAME.github.io/mail-reminder/taskpane.html"/>
+        <SourceLocation DefaultValue="https://op4e71.github.io/mail-reminder/taskpane.html"/>
         <RequestedHeight>250</RequestedHeight>
       </DesktopSettings>
     </Form>
@@ -72,12 +72,12 @@
     </Hosts>
     <Resources>
       <bt:Images>
-        <bt:Image id="Icon16" DefaultValue="https://YOURNAME.github.io/mail-reminder/icon-16.png"/>
-        <bt:Image id="Icon32" DefaultValue="https://YOURNAME.github.io/mail-reminder/icon-32.png"/>
-        <bt:Image id="Icon80" DefaultValue="https://YOURNAME.github.io/mail-reminder/icon-80.png"/>
+        <bt:Image id="Icon16" DefaultValue="https://op4e71.github.io/mail-reminder/icon-16.png"/>
+        <bt:Image id="Icon32" DefaultValue="https://op4e71.github.io/mail-reminder/icon-32.png"/>
+        <bt:Image id="Icon80" DefaultValue="https://op4e71.github.io/mail-reminder/icon-80.png"/>
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="TaskpaneUrl" DefaultValue="https://YOURNAME.github.io/mail-reminder/taskpane.html"/>
+        <bt:Url id="TaskpaneUrl" DefaultValue="https://op4e71.github.io/mail-reminder/taskpane.html"/>
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="GroupLabel" DefaultValue="Reminders"/>
