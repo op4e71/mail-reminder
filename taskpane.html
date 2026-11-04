@@ -76,18 +76,29 @@
     }
   });
 
-  document.getElementById("create").addEventListener("click", () => {
-    showStatus("Sent to Shortcuts.");
+  function copySync() {
+    const t = document.createElement("textarea");
+    t.value = reminderText; document.body.appendChild(t);
+    t.select(); document.execCommand("copy"); t.remove();
+  }
+
+  document.getElementById("create").addEventListener("click", (ev) => {
+    ev.preventDefault();
+    copySync(); // clipboard is always filled, so the Shortcut works as a fallback
+    const url = document.getElementById("create").href;
+    let opened = false;
+    try {
+      if (Office.context.ui && typeof Office.context.ui.openBrowserWindow === "function") {
+        Office.context.ui.openBrowserWindow(url);
+        opened = true;
+      }
+    } catch (e) {}
+    if (!opened) window.open(url, "_blank");
+    showStatus("Sent to Shortcuts and copied. If no reminder appears, run the Shortcut.");
   });
 
-  document.getElementById("copy").addEventListener("click", async () => {
-    try {
-      await navigator.clipboard.writeText(reminderText);
-    } catch {
-      const t = document.createElement("textarea");
-      t.value = reminderText; document.body.appendChild(t);
-      t.select(); document.execCommand("copy"); t.remove();
-    }
+  document.getElementById("copy").addEventListener("click", () => {
+    copySync();
     showStatus("Copied. Run the Shortcut to create the reminder.");
   });
 
