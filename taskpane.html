@@ -94,12 +94,12 @@
       }
     } catch (e) {}
     if (!opened) window.open(url, "_blank");
-    showStatus("Sent to Shortcuts and copied. If no reminder appears, run the Shortcut.");
+    showStatus("Sent to Shortcuts and copied. If no reminder appears, run the Shortcut. Legacy outlook does not trigger the action. opt+f10 assigned to shortcut.");
   });
 
   document.getElementById("copy").addEventListener("click", () => {
     copySync();
-    showStatus("Copied. Run the Shortcut to create the reminder.");
+    showStatus("Copied. Run the Shortcut to create the reminder (opt+f10).");
   });
 
   function showStatus(msg, isError) {
